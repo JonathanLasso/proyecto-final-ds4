@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "Mis Tareas";
+    string[] dias = {
+        "Lunes", "Martes", "Miércoles",
+        "Jueves", "Viernes", "Sábado", "Domingo"
+    };
+
+    bool listaVacia = ViewBag.lista == null || ViewBag.lista.Count == 0;
+}
+
+<div class="card shadow">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">📝 Tareas de la Semana</h4>
+
+        <div class="d-flex gap-2">
+            @using (Html.BeginForm("EliminarTodas", "AgendarTareas", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <button type="submit"
+                        class="btn btn-danger btn-sm"
+                        @(listaVacia ? "disabled" : "")
+                        onclick="return confirm('¿Estás seguro de eliminar TODAS las tareas?');">
+                    🗑 Eliminar Todas
+                </button>
+            }
+
+            <a href="@Url.Action("CrearTarea")" class="btn btn-light btn-sm">
+                ➕ Nueva Tarea
+            </a>
+        </div>
+    </div>
+
+    <div class="card-body">
+
+        @if (TempData["mensaje"] != null)
+        {
+            <div class="alert alert-success text-center mb-3">
+                @TempData["mensaje"]
+            </div>
+        }
+
+        <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Día</th>
+                    <th>Horario</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (listaVacia)
+                {
+                    <tr>
+                        <td colspan="6">
+                            <div class="alert alert-info mb-0">
+                                📭 No hay tareas registradas.<br />
+                                ¡Empieza creando una nueva tarea!
+                            </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in ViewBag.lista)
+                    {
+                        <tr>
+                            <td><strong>@item.titulo</strong></td>
+                            <td>@item.descripcion</td>
+
+                            <td>
+                                <span class="badge bg-info">
+                                    @dias[item.diaSemana - 1]
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-secondary">
+                                    ⏰ @DateTime.Today.Add(item.horaInicio).ToString("hh:mm tt")
+                                    -
+                                    @DateTime.Today.Add(item.horaFin).ToString("hh:mm tt")
+                                </span>
+                            </td>
+
+                            <td>
+                                @if (item.completada)
+                                {
+                                    <span class="badge bg-success">✔ Completada</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">⏳ Pendiente</span>
+                                }
+                            </td>
+
+                            <td class="d-flex justify-content-center gap-2">
+                                @using (Html.BeginForm("Eliminar", "AgendarTareas", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.idTarea" />
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-outline-danger"
+                                           onclick="return confirm('¿Seguro que deseas eliminar la tarea con ID: @item.idTarea ?');">
+                                        🗑 Eliminar
+                                    </button>
+                                }
+
+                                <a href="@Url.Action("EditarTarea", "AgendarTareas", new { id = item.idTarea })"
+                                   class="btn btn-sm btn-outline-primary">
+                                    ✏️ Actualizar
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

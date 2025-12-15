@@ -1,0 +1,117 @@
+﻿@model proyectoFinalDs4.Models.Agendar
+
+@{
+    ViewBag.Title = "Crear Tarea";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center">
+                <h4 class="mb-0">➕ Crear Nueva Tarea</h4>
+            </div>
+
+            <div class="card-body">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger text-center">
+                        ❌ Por favor complete los campos obligatorios
+                    </div>
+                }
+                @using (Html.BeginForm("CrearTarea", "AgendarTareas", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(m => m.idTarea)
+
+                    <!-- TÍTULO -->
+                    <div class="form-group text-center">
+                        @Html.LabelFor(m => m.titulo, new { @class = "font-weight-bold d-block" })
+                        @Html.TextBoxFor(m => m.titulo, new
+                        {
+                            @class = "form-control w-75 mx-auto text-center",
+                            placeholder = "Ej: Estudiar matemáticas"
+                        })
+                        @Html.ValidationMessageFor(m => m.titulo, "", new { @class = "text-danger d-block" })
+                    </div>
+
+                    <!-- DESCRIPCIÓN -->
+                    <div class="form-group text-center">
+                        @Html.LabelFor(m => m.descripcion, new { @class = "font-weight-bold d-block" })
+                        @Html.TextAreaFor(m => m.descripcion, new
+                        {
+                            @class = "form-control w-75 mx-auto text-center",
+                            rows = 3,
+                            placeholder = "Descripción de la tarea"
+                        })
+                    </div>
+
+                    <!-- DÍA DE LA SEMANA -->
+                    <div class="form-group text-center">
+                        @Html.LabelFor(m => m.diaSemana, new { @class = "font-weight-bold d-block" })
+                        @Html.DropDownListFor(m => m.diaSemana,
+                            new SelectList(new[]
+                            {
+                                new { Id = 1, Nombre = "Lunes" },
+                                new { Id = 2, Nombre = "Martes" },
+                                new { Id = 3, Nombre = "Miércoles" },
+                                new { Id = 4, Nombre = "Jueves" },
+                                new { Id = 5, Nombre = "Viernes" },
+                                new { Id = 6, Nombre = "Sábado" },
+                                new { Id = 7, Nombre = "Domingo" }
+                            }, "Id", "Nombre"),
+                            "-- Seleccione --",
+                            new { @class = "form-control w-75 mx-auto text-center" })
+                        @Html.ValidationMessageFor(m => m.diaSemana, "", new { @class = "text-danger d-block" })
+                    </div>
+
+                    <!-- HORAS -->
+                    <div class="form-row" style="justify-items:center">
+                        <div class="form-group col-6 d-flex flex-column align-items-center">
+                            @Html.LabelFor(m => m.horaInicio, new { @class = "font-weight-bold" })
+                            @Html.TextBoxFor(m => m.horaInicio, new
+                            {
+                                @class = "form-control text-center",
+                                type = "time",
+                                style = "max-width: 180px;"
+                            })
+                            @Html.ValidationMessageFor(m => m.horaInicio, "", new { @class = "text-danger d-block" })
+                        </div>
+
+                        <div class="form-group col-6 d-flex flex-column align-items-center">
+                            @Html.LabelFor(m => m.horaFin, new { @class = "font-weight-bold" })
+                            @Html.TextBoxFor(m => m.horaFin, new
+                            {
+                                @class = "form-control text-center",
+                                type = "time",
+                                style = "max-width: 180px;"
+                            })
+                            @Html.ValidationMessageFor(m => m.horaFin, "", new { @class = "text-danger d-block" })
+                        </div>
+                    </div>
+
+                    <!-- COMPLETADA -->
+                    <div class="form-group d-flex flex-column align-items-center mt-3">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.completada, new { @class = "form-check-input" })
+                            @Html.LabelFor(m => m.completada, new { @class = "form-check-label font-weight-bold" })
+                        </div>
+                    </div>
+
+                    <!-- BOTONES -->
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success btn-block w-75 mx-auto">
+                            💾 Guardar Tarea
+                        </button>
+
+                        <a href="@Url.Action("Index")"
+                           class="btn btn-outline-secondary btn-block w-75 mx-auto mt-2">
+                            ← Volver
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

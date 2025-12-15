@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Tareas</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 15px;
+            background: #343a40;
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/AgendarTareas/Index">📅 Agenda Semanal</a>
+        </div>
+    </nav>
+
+    <!-- CONTENIDO -->
+    <div class="container body-content mt-4">
+        @RenderBody()
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        © @DateTime.Now.Year - Agenda de Tareas
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
