@@ -38,6 +38,12 @@
                 @TempData["mensaje"]
             </div>
         }
+        @if (TempData["error"] != null)
+        {
+        <div class="alert alert-danger text-center mb-3">
+            @TempData["error"]
+        </div>
+        }
 
         <table class="table table-bordered table-hover align-middle text-center">
             <thead class="table-dark">
@@ -104,7 +110,7 @@
 
                                     <button type="submit"
                                             class="btn btn-sm btn-outline-danger"
-                                           onclick="return confirm('¿Seguro que deseas eliminar la tarea con ID: @item.idTarea ?');">
+                                            onclick="return confirm('¿Seguro que deseas eliminar la tarea con ID: @item.idTarea ?');">
                                         🗑 Eliminar
                                     </button>
                                 }

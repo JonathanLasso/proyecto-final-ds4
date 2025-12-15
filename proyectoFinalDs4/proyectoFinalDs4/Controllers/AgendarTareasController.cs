@@ -10,49 +10,81 @@ namespace proyectoFinalDs4.Controllers
 {
     public class AgendarTareasController : Controller
     {
+        
         [HttpGet]
         public ActionResult Index()
         {
-            ViewBag.lista = Agendar.todasLasTareasAgendadas();
-            return View();
+            try
+            {
+                ViewBag.lista = Agendar.todasLasTareasAgendadas();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Ocurrió un error al cargar las tareas.";
+                return View();
+            }
         }
 
+        
         [HttpGet]
         public ActionResult CrearTarea()
         {
-            return View(new Agendar());
+            try
+            {
+                return View(new Agendar());
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index");
+            }
         }
 
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CrearTarea(Agendar tarea)
         {
             if (!ModelState.IsValid)
             {
-                return View(tarea); // vuelve a la misma vista
+                return View(tarea);
             }
+
             try
             {
-                tarea.insertarTarea(); // usa tu método del modelo
+                tarea.insertarTarea();
                 TempData["mensaje"] = "Tarea agendada correctamente";
-                return RedirectToAction("Index"); // o mostrarListaTareas
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                ModelState.AddModelError("", "Ocurrió un error al guardar la tarea.");
                 return View(tarea);
             }
         }
+
+       
         [HttpGet]
         public ActionResult EditarTarea(int id)
         {
-            Agendar modelo = Agendar.ObtenerPorId(id);
-            if (modelo == null)
+            try
             {
-                return HttpNotFound();
+                Agendar tarea = Agendar.ObtenerPorId(id);
+
+                if (tarea == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(tarea);
             }
-            return View(modelo);
+            catch (Exception)
+            {
+                return RedirectToAction("Index");
+            }
         }
+
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditarTarea(Agendar tarea)
@@ -61,37 +93,58 @@ namespace proyectoFinalDs4.Controllers
             {
                 return View(tarea);
             }
+
             try
             {
                 tarea.actualizarTarea();
                 TempData["mensaje"] = "Tarea actualizada correctamente";
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ModelState.AddModelError("", "Ocurrió un error al actualizar la tarea.\"");
+                ModelState.AddModelError("", "Ocurrió un error al actualizar la tarea.");
                 return View(tarea);
             }
         }
+
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Eliminar(int id)
         {
-            Agendar tarea = new Agendar();
-            tarea.eliminarTarea(id);
+            try
+            {
+                Agendar tarea = new Agendar();
+                tarea.eliminarTarea(id);
 
-            TempData["mensaje"] = "Tarea eliminada correctamente";
-            return RedirectToAction("Index");
+                TempData["mensaje"] = "Tarea eliminada correctamente";
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                TempData["error"] = "Ocurrió un error al eliminar la tarea.";
+                return RedirectToAction("Index");
+            }
         }
+
+        
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EliminarTodas()
         {
-            Agendar tarea = new Agendar();
-            tarea.eliminarTodasLasTareas();
+            try
+            {
+                Agendar tarea = new Agendar();
+                tarea.eliminarTodasLasTareas();
 
-            TempData["mensaje"] = "Todas las tareas fueron eliminadas";
-            return RedirectToAction("Index");
+                TempData["mensaje"] = "Todas las tareas fueron eliminadas";
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                TempData["error"] = "Ocurrió un error al eliminar todas las tareas.";
+                return RedirectToAction("Index");
+            }
         }
-
     }
 }

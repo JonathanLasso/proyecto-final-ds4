@@ -76,19 +76,15 @@ namespace proyectoFinalDs4.Models
         {
             Agendar tarea = null;
             Agendar conexionTarea = new Agendar();
-
             try
             {
                 conexionTarea.abrirConexion();
-
                 SqlCommand comando = new SqlCommand(
                     "SELECT IdTarea, Titulo, Descripcion, DiaSemana, HoraInicio, HoraFin, TareaCompletada " +
                     "FROM TAREA WHERE IdTarea = @idTarea", conexionTarea.conexion);
 
                 comando.Parameters.AddWithValue("@idTarea", idTarea);
-
                 SqlDataReader reader = comando.ExecuteReader();
-
                 if (reader.Read())
                 {
                     tarea = new Agendar
@@ -102,7 +98,6 @@ namespace proyectoFinalDs4.Models
                         completada = Convert.ToBoolean(reader["TareaCompletada"])
                     };
                 }
-
                 conexionTarea.cerrarConexion();
                 return tarea;
             }
@@ -129,10 +124,10 @@ namespace proyectoFinalDs4.Models
                         idTarea = Convert.ToInt32(leerDatos["IdTarea"]),
                         titulo = leerDatos["Titulo"].ToString(),
                         descripcion = leerDatos["Descripcion"].ToString(),
-                        diaSemana = Convert.ToInt32(leerDatos["DiaSemana"]), // tipo de dato int
-                        horaInicio = (TimeSpan)leerDatos["HoraInicio"], // tipo de dato TimeSpan
-                        horaFin = (TimeSpan)leerDatos["HoraFin"], // tipo de dato TimeSpan
-                        completada = Convert.ToBoolean(leerDatos["TareaCompletada"]) // tipo de dato booleano
+                        diaSemana = Convert.ToInt32(leerDatos["DiaSemana"]), 
+                        horaInicio = (TimeSpan)leerDatos["HoraInicio"], 
+                        horaFin = (TimeSpan)leerDatos["HoraFin"], 
+                        completada = Convert.ToBoolean(leerDatos["TareaCompletada"])
                     });
                 }
                 tarea.cerrarConexion();
