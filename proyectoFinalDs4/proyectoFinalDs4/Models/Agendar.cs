@@ -12,23 +12,29 @@ namespace proyectoFinalDs4.Models
     public class Agendar
     {
         public int idTarea { set; get; }
+
         [Display(Name = "Título de la tarea")]
         [Required(ErrorMessage = "El título es obligatorio")]
         [StringLength(50, ErrorMessage = "Máximo 50 caracteres")]
         public string titulo { set; get; }
+
         [Display(Name = "Descripción")]
         [StringLength(100, ErrorMessage = "Máximo 100 caracteres")]
         public string descripcion { set; get; }
+
         [Display(Name = "Dia de la semana")]
         [Required(ErrorMessage = "Debe seleccionar un día")]
         [Range(1, 7, ErrorMessage = "Seleccione un día válido")]
         public int diaSemana { set; get; }
+
         [Display(Name = "Hora de inicio")]
         [Required(ErrorMessage = "La hora de inicio es obligatoria")]
         public TimeSpan horaInicio { set; get; }
+
         [Display(Name = "Hora de finalización")]
         [Required(ErrorMessage = "La hora de fin es obligatoria")]
         public TimeSpan horaFin {  set; get; }
+
         [Display(Name = "¿Tarea completada?")]
         public bool completada { set; get; }
 
@@ -215,32 +221,5 @@ namespace proyectoFinalDs4.Models
                 throw new Exception("Error al eliminar todas las tareas");
             }
         }
-        public static Agendar agendarTarea(string titulo, string descripcion, int diaSemana, TimeSpan horaInicio, TimeSpan horaFin, bool tareaCompletada)
-        {
-            Agendar tarea = new Agendar();
-            tarea.titulo = titulo;
-            tarea.descripcion = descripcion;
-            if(diaSemana >= 1 && diaSemana <= 7)
-            {
-                tarea.diaSemana = diaSemana;
-                tarea.horaInicio = horaInicio;
-                tarea.horaFin = horaFin;
-                tarea.completada = tareaCompletada;
-            }
-            else
-            {
-                throw new Exception("El día de la semana debe estar entre 1 y 7");
-            }
-            try
-            {
-                tarea.insertarTarea();
-                return tarea;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error: " + ex.ToString());
-            }
-        }
-
     }
 }
