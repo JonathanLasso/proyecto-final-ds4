@@ -19,7 +19,7 @@ namespace proyectoFinalDs4.Controllers
                 ViewBag.lista = Agendar.todasLasTareasAgendadas();
                 return View();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ViewBag.Error = "Ocurrió un error al cargar las tareas.";
                 return View();
@@ -56,7 +56,7 @@ namespace proyectoFinalDs4.Controllers
                 TempData["mensaje"] = "Tarea agendada correctamente";
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ModelState.AddModelError("", "Ocurrió un error al guardar la tarea.");
                 return View(tarea);
