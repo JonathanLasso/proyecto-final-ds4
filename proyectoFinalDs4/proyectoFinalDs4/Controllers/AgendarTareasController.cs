@@ -39,8 +39,6 @@ namespace proyectoFinalDs4.Controllers
                 return RedirectToAction("Index");
             }
         }
-
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CrearTarea(Agendar tarea)
@@ -65,17 +63,16 @@ namespace proyectoFinalDs4.Controllers
 
        
         [HttpGet]
+        [ValidateAntiForgeryToken]
         public ActionResult EditarTarea(int id)
         {
             try
             {
                 Agendar tarea = Agendar.ObtenerPorId(id);
-
                 if (tarea == null)
                 {
                     return HttpNotFound();
                 }
-
                 return View(tarea);
             }
             catch (Exception)
@@ -83,8 +80,6 @@ namespace proyectoFinalDs4.Controllers
                 return RedirectToAction("Index");
             }
         }
-
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditarTarea(Agendar tarea)
@@ -93,7 +88,6 @@ namespace proyectoFinalDs4.Controllers
             {
                 return View(tarea);
             }
-
             try
             {
                 tarea.actualizarTarea();
