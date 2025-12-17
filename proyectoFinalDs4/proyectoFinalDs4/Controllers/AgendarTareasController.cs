@@ -63,7 +63,6 @@ namespace proyectoFinalDs4.Controllers
 
        
         [HttpGet]
-        [ValidateAntiForgeryToken]
         public ActionResult EditarTarea(int id)
         {
             try
